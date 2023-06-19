@@ -6,7 +6,7 @@
 /*   By: mrony <mrony@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 19:34:26 by mrony             #+#    #+#             */
-/*   Updated: 2023/06/12 22:09:22 by mrony            ###   ########.fr       */
+/*   Updated: 2023/06/13 17:30:47 by mrony            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <signal.h>
 # include <stdlib.h>
 # include <stdint.h>
-
 # include "../../ft_printf/inc/ft_printf.h"
 
 void	ft_putnbr_fd(int n, int fd);
@@ -38,6 +37,7 @@ void	*ft_calloc(size_t nmemb, size_t size);
 # define SNDSI2 "\e[1;35m🦖 Sending SIGUSR2 failed 🦖\033[1;0m"
 # define FLDCLC "\e[1;35m🦖 Calloc allocation failed 🦖\033[1;0m"
 # define STRPNT "\033[0;32mString Received:'\033[1;0m%s\033[0;32m'\033[1;0m\n"
+# define STRLEN "\033[0;32mString Length:\033[1;0m %d\n"
 
 typedef struct s_server
 {

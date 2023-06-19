@@ -6,11 +6,13 @@
 /*   By: mrony <mrony@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 21:51:05 by mrony             #+#    #+#             */
-/*   Updated: 2023/06/13 12:24:40 by mrony            ###   ########.fr       */
+/*   Updated: 2023/06/14 15:28:12 by mrony            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/server.h"
+
+int	g_flag;
 
 void	ft_set_server_action(struct sigaction *sa)
 {
@@ -31,7 +33,7 @@ void	ft_set_str(t_server *server)
 	if (server->bits == sizeof(int) * 8 && server->flag == 0)
 	{
 		server->flag = 1;
-		ft_printf("\033[0;32mString Length:\033[1;0m %d\n", server->data);
+		ft_printf(STRLEN, server->data);
 		server->str = ft_calloc(server->data + 1, sizeof(char));
 		if (!server->str)
 		{
@@ -56,10 +58,14 @@ void	ft_print_str(t_server *server, int *i, int client_pid)
 			server->str = NULL;
 			server->flag = 0;
 			*i = 0;
-			if (kill(client_pid, SIGUSR2) < 0)
+			if (g_flag == 0)
 			{
-				ft_putstr_fd(SNDSI2, 2);
-				exit(EXIT_FAILURE);
+				if (kill(client_pid, SIGUSR2) < 0)
+				{
+					ft_putstr_fd(SNDSI2, 2);
+					exit(EXIT_FAILURE);
+				}
+				g_flag = 1;
 			}
 		}
 		server->bits = 0;
@@ -72,7 +78,8 @@ void	ft_server_handler(int signal, siginfo_t *info, void *context)
 	static int			i;
 
 	(void)context;
-	usleep(500);
+	if (signal == SIGUSR1 || signal == SIGUSR2)
+		g_flag = 0;
 	if (server.bits == 0)
 		server.data = 0;
 	if (signal == SIGUSR1 && server.flag == 0)
@@ -82,10 +89,14 @@ void	ft_server_handler(int signal, siginfo_t *info, void *context)
 	server.bits++;
 	ft_set_str(&server);
 	ft_print_str(&server, &i, info->si_pid);
-	if (kill(info->si_pid, SIGUSR1) < 0)
-	{
-		ft_putstr_fd(SNDSI1, 2);
-		exit(EXIT_FAILURE);
+	if (g_flag == 0)
+	{	
+		if (kill(info->si_pid, SIGUSR1) < 0)
+		{
+			ft_putstr_fd(SNDSI1, 2);
+			exit(EXIT_FAILURE);
+		}
+		g_flag = 1;
 	}
 }
 
@@ -99,6 +110,6 @@ int	main(void)
 	sa_s.sa_sigaction = ft_server_handler;
 	ft_set_server_action(&sa_s);
 	while (1)
-		pause();
+		;
 	return (0);
 }

@@ -6,11 +6,13 @@
 /*   By: mrony <mrony@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 13:28:13 by mrony             #+#    #+#             */
-/*   Updated: 2023/06/13 12:32:23 by mrony            ###   ########.fr       */
+/*   Updated: 2023/06/14 18:15:25 by mrony            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/client.h"
+
+int	g_flag;
 
 void	ft_set_client_action(struct sigaction *sa)
 {
@@ -34,13 +36,14 @@ void	ft_client_handler(int signal, siginfo_t *info, void *context)
 	(void)context;
 	if (signal == SIGUSR1 && flag == 0)
 	{
-		ft_printf("\033[1;34mꔷ\033[1;0m");
+		ft_printf("\033[0;34m.\033[1;0m");
 	}
 	if (signal == SIGUSR2)
 	{
-		ft_printf("🦚\n");
+		ft_printf("\033[0;34mString Status: \033[1;0mReceived 🦚\n");
 		flag = 1;
 	}
+	g_flag = 1;
 }
 
 void	ft_int_to_bin(int size, int pid)
@@ -52,6 +55,7 @@ void	ft_int_to_bin(int size, int pid)
 	cpy = size;
 	while (i < 32)
 	{
+		g_flag = 0;
 		if ((cpy << i) & 0x80000000)
 		{
 			if (kill(pid, SIGUSR1) < 0)
@@ -63,7 +67,8 @@ void	ft_int_to_bin(int size, int pid)
 				ft_failed_kill(SNDSI2);
 		}
 		i++;
-		pause();
+		while (!g_flag)
+			usleep(10);
 	}
 }
 
@@ -76,6 +81,7 @@ void	ft_char_to_bin(char c, int pid)
 	cpy = c;
 	while (i < 8)
 	{
+		g_flag = 0;
 		if ((cpy << i) & 0x80)
 		{
 			if (kill(pid, SIGUSR1) < 0)
@@ -87,7 +93,8 @@ void	ft_char_to_bin(char c, int pid)
 				ft_failed_kill(SNDSI2);
 		}
 		i++;
-		pause();
+		while (!g_flag)
+			usleep(10);
 	}
 }
 

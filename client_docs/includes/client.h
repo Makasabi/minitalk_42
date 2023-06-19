@@ -6,7 +6,7 @@
 /*   By: mrony <mrony@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 19:38:34 by mrony             #+#    #+#             */
-/*   Updated: 2023/06/13 12:32:42 by mrony            ###   ########.fr       */
+/*   Updated: 2023/06/13 17:29:09 by mrony            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,11 @@
 # include <string.h>
 # include "../../ft_printf/inc/ft_printf.h"
 
-# define ERRARG "Invalid argument\n"
-
 void	ft_failed_kill(char *error);
 void	ft_param_error(void);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
 int		ft_atoi(const char *nptr);
-
-// 🦥 🦦 🦚 🦖 🦤 🦭
-
-// ERROR //
 
 # define INVARG "\033[1;35m🦖 Invalid Argument(s) 🦖\n\033[1;0m"
 # define USAGE "\033[0;34m🦥 Usage: ./client <server PID> \
