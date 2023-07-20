@@ -6,7 +6,7 @@
 /*   By: mrony <mrony@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 13:28:13 by mrony             #+#    #+#             */
-/*   Updated: 2023/06/19 12:17:28 by mrony            ###   ########.fr       */
+/*   Updated: 2023/06/14 15:28:06 by mrony            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,14 @@ void	ft_client_handler(int signal, siginfo_t *info, void *context)
 	(void)context;
 	if (signal == SIGUSR1 && flag == 0)
 	{
-		//ft_printf("\033[0;34m.\033[1;0m");
 	}
 	if (signal == SIGUSR2)
-	{git@github.com:Makasabi/philosophers_42.git
+	{
+		ft_printf("\033[0;34mString Status: \033[1;0mReceived 🦚\n");
+		flag = 1;
+	}
+	g_flag = 1;
+}
 
 void	ft_int_to_bin(int size, int pid)
 {
